@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
   <img src="https://github.com/njic/medassist/blob/main/public/icons/logo-pills.svg?raw=true" width="100" title="MedAssist">
   <h1>MedAssist</h1>
@@ -187,3 +188,6 @@ Make sure to sve database file ```medication.db``` somewhere safe
   </p>
 
 </div>
+=======
+# Myhealthtracker
+>>>>>>> b68f6b3b162807857bb875e49817664eedd15814

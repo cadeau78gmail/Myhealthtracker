@@ -1,187 +1,250 @@
-         <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <link rel="icon" href="/icons/favicon.svg" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedAssist - Settings</title>
+    <title>Recovery - Settings</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="index.html" id="nav-home">
-            <img src="/icons/home.svg" alt="Home Icon" class="nav-icon"> Dashboard
-        </a>
-        <a href="config.html" id="nav-config">
-            <img src="/icons/config.svg" alt="Config Icon" class="nav-icon"> Config
-        </a>
-        <a href="planner.html" id="nav-planner">
-            <img src="/icons/planner.svg" alt="Planner Icon" class="nav-icon"> Planner
-        </a>
-        <a href="settings.html" id="nav-settings">
-            <img src="/icons/settings.svg" alt="Settings Icon" class="nav-icon"> Settings
-        </a>
-        <a href="https://github.com/njic/medassist" target="_blank" class="logo-link">
-            <div class="logo-container">
-                <img src="/icons/logo-pills.svg" alt="Logo" class="sidenav-logo">
-                <span class="sidenav-title">MedAssist</span>
-                <span class="sidenav-version">github</span>
-            </div>
-        </a>
-    </div>
-
-    <div class="header">
-        <div class="menu-icon" onclick="openNav()">
-            <span></span>
-            <span></span>
-            <span></span>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="recovery-text">Recovery</div>
         </div>
-        <a href="index.html" class="logo">MedAssist</a>
     </div>
-    
-    <h1 class="top-title">Settings</h1>
 
-    <div class="form-wrapper">
-        <form id="settingsForm" action="/update-smtp-settings" method="POST">
-
-            <h2>Set username
-                <div class="info-button">
-                    <span>i</span>
-                    <div class="tooltip">Set your real name or choose username for dashboard and e-mail notifications</div>
-                </div>
-            </h2>
-            <div class="form-group">
-                <label for="username" class="input-top" autocomplete="off">Username</label>
-                <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="username" class="input-inside"><br></label>
-                        <input type="text" class="textboxSmtp" id="username" name="username" value="User" required>
-                    </div>
-                </div>
-                <label class="input-bottom"><br></label>
+    <!-- Horizontal Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <button class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <a href="index.html" class="navbar-brand">
+                <img src="/icons/logo-pills.svg" alt="Logo" class="navbar-logo">
+                <span class="brand-text">Recovery</span>
+            </a>
+            
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html" class="navbar-link" id="nav-home">Dashboard</a>
+                <a href="config.html" class="navbar-link" id="nav-config">Config</a>
+                <a href="planner.html" class="navbar-link" id="nav-planner">Planner</a>
+                <a href="settings.html" class="navbar-link active" id="nav-settings">Settings</a>
             </div>
+        </div>
+    </nav>
 
-            <h2>Configure e-mail notifications
-                <div class="info-button">
-                    <span>i</span>
-                    <div class="tooltip">If enabled, e-mail will be sent at Send Time, but only if Days Left of any Medication in inventory drops to Min Days value or lower. It will repeat every Repeat Days</div>
-                </div>
-            </h2>
-            <div class="form-row">
-                <label for="cron_enabled" class="input-top">Enable e-mail notifications</label>
-                <label class="switch">
-                    <input type="checkbox" id="cron_enabled" name="cron_enabled">
-                    <span class="slider"></span>
-                </label>
+    <main class="page-layout">
+        <aside class="left-panel">
+            <div class="panel-visual settings-hero">
+                <img src="/images/settings-hero.svg" alt="Settings and notifications illustration" class="hero-image">
+                <div class="hero-label">Smart alert control</div>
             </div>
-
-            <div class="settings-row">
-                <div class="form-group min-input">
-                    <label for="min_days_left" class="input-top">Min Days</label>
-                    <div class="input-wrapper">
-                        <div class="input-group">
-                            <label for="min_days_left" class="input-inside">Days</label>
-                            <input type="number" class="textboxNumber" min="1" id="min_days_left" name="min_days_left" value="10" required>
+            <div class="panel-copy">
+                <h2>Reliable notification settings</h2>
+                <p>Turn on automated e-mail reminders, choose thresholds, and make sure Recovery notifies you exactly when your medication stock needs attention.</p>
+                <div class="panel-feature-list">
+                    <div class="panel-feature">
+                        <div class="feature-label">Notification Clarity</div>
+                        <div>
+                            <h3>Notification clarity</h3>
+                            <p>Set the right frequency so alerts only arrive when they matter.</p>
                         </div>
                     </div>
-                    <label id="minDaysLabel" class="input-bottom">If Days Left ≤ 10</label>
-                </div>
-                <div class="form-group send-input">
-                    <label for="email_send_time" class="input-top">Send Time</label>
-                    <div class="input-wrapper">
-                        <div class="input-group">
-                            <label for="hours" class="input-inside">HH</label>
-                            <input type="number" id="email_send_time_hours" name="email_send_time_hours" required>
-                        </div>
-                        <span>:</span>
-                        <div class="input-group">
-                            <label for="minutes" class="input-inside">MM</label>
-                            <input type="number" id="email_send_time_minutes" name="email_send_time_minutes" required>
+                    <div class="panel-feature">
+                        <div class="feature-label">Secure Delivery</div>
+                        <div>
+                            <h3>Secure delivery</h3>
+                            <p>Use trusted SMTP settings and recipient controls for your e-mail alerts.</p>
                         </div>
                     </div>
-                    <label id="emailSendTimeLabel" class="input-bottom">Send @07:00</label>
-                </div>
-                <div class="form-group repeat-input">
-                    <label for="email_delay_days" class="input-top">Repeat</label>
-                    <div class="input-wrapper">
-                        <div class="input-group">
-                            <label for="email_delay_days" class="input-inside">Days</label>
-                            <input type="number" class="textboxNumber" min="1" id="email_delay_days" name="email_delay_days" required>
+                    <div class="panel-feature">
+                        <div class="feature-label">Reliable Reminders</div>
+                        <div>
+                            <h3>Reliable reminders</h3>
+                            <p>Only send messages when stock gets low, so alerts stay helpful.</p>
                         </div>
                     </div>
-                    <label id="emailRepeatLabel" class="input-bottom">Every Day</label>
                 </div>
             </div>
-            <h2>Configure SMTP server
-                <div class="info-button">
-                    <span>i</span>
-                    <div class="tooltip">Example is provided for Gmail (<a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener noreferrer">generate app password here</a>) <br>
-                        You can use multiple comma separated "," recipient e-mails</div>
-                </div>
-            </h2>
+        </aside>
+        <section class="page-content">
+            <div class="dashboard-header">
+                <h1 class="top-title">Settings</h1>
+                <div class="dashboard-subtitle">Configure notifications and preferences</div>
+            </div>
 
-            <div class="form-group full-row">
-                <label for="smtp_host" class="input-top">SMTP Host</label>
-                <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="smtp_host" class="input-inside"><br></label>
-                        <input type="text" class="textboxSmtp" id="smtp_host" name="smtp_host">
+            <div class="form-wrapper">
+                <form id="settingsForm" action="/update-smtp-settings" method="POST">
+
+                    <div class="section-header">
+                        <h2>Personal Information
+                            <div class="info-button">
+                                <span>i</span>
+                                <div class="tooltip">Set your real name or choose a username for dashboard and e-mail notifications</div>
+                            </div>
+                        </h2>
                     </div>
-                </div>
-                <label class="input-bottom">Example: smtp.gmail.com</label>
-            </div>
-
-            <div class="form-group full-row">
-                <label for="smtp_port" class="input-top">SMTP Port</label>
-                <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="smtp_port" class="input-inside"><br></label>
-                        <input type="number" class="textboxSmtp" id="smtp_port" name="smtp_port">
+                    <div class="form-group">
+                        <label for="username" class="input-top">Your Name</label>
+                        <div class="input-wrapper">
+                            <div class="input-group">
+                                <label for="username" class="input-inside"><br></label>
+                                <input type="text" class="textboxSmtp" id="username" name="username" value="User" required autocomplete="off">
+                            </div>
+                        </div>
+                        <label class="input-bottom"><br></label>
                     </div>
-                </div>
-                <label class="input-bottom">Example: 587</label>
-            </div>
 
-            <div class="form-group full-row">
-                <label for="smtp_user" class="input-top">SMTP Username</label>
-                <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="smtp_user" class="input-inside"><br></label>
-                        <input type="text" class="textboxSmtp" id="smtp_user" name="smtp_user" autocomplete="off">
+                    <div class="section-header">
+                        <h2>Email Notifications
+                            <div class="info-button">
+                                <span>i</span>
+                                <div class="tooltip">If enabled, an e-mail will be sent at Send Time, but only if Days Left of any medication drops to Min Days or lower. It will repeat every Repeat Days.</div>
+                            </div>
+                        </h2>
                     </div>
-                </div>
-                <label class="input-bottom">Example: username@gmail.com</label>
-            </div>
-
-            <div class="form-group full-row">
-                <label for="smtp_pass" class="input-top">SMTP Password</label>
-                <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="smtp_pass" class="input-inside"><br></label>
-                        <input type="password" class="textboxSmtp" id="smtp_pass" name="smtp_pass" placeholder="****************" autocomplete="off">
+                    <div class="form-row">
+                        <label for="cron_enabled" class="input-top">Enable automatic email notifications</label>
+                        <label class="switch">
+                            <input type="checkbox" id="cron_enabled" name="cron_enabled">
+                            <span class="slider"></span>
+                        </label>
                     </div>
-                </div>
-                <label class="input-bottom">app password</label>
-            </div>
 
-            <div class="form-group full-row">
-                <label for="recipient_email" class="input-top">Recipient Email:</label>
-                <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="recipient_email" class="input-inside"><br></label>
-                        <input type="email" multiple class="textboxSmtp" id="recipient_email" name="recipient_email">
+                    <div class="settings-row">
+                        <div class="form-group min-input">
+                            <label for="min_days_left" class="input-top">Alert Threshold</label>
+                            <div class="input-wrapper">
+                                <div class="input-group">
+                                    <label for="min_days_left" class="input-inside">Days</label>
+                                    <input type="number" class="textboxNumber" min="1" id="min_days_left" name="min_days_left" value="10" required>
+                                </div>
+                            </div>
+                            <label id="minDaysLabel" class="input-bottom">Send alert when ≤ 10 days left</label>
+                        </div>
+                        <div class="form-group send-input">
+                            <label for="email_send_time" class="input-top">Daily Check Time</label>
+                            <div class="input-wrapper">
+                                <div class="input-group">
+                                    <label for="hours" class="input-inside">HH</label>
+                                    <input type="number" id="email_send_time_hours" name="email_send_time_hours" required>
+                                </div>
+                                <span>:</span>
+                                <div class="input-group">
+                                    <label for="minutes" class="input-inside">MM</label>
+                                    <input type="number" id="email_send_time_minutes" name="email_send_time_minutes" required>
+                                </div>
+                            </div>
+                            <label id="emailSendTimeLabel" class="input-bottom">Send @07:00</label>
+                        </div>
+                        <div class="form-group repeat-input">
+                            <label for="email_delay_days" class="input-top">Repeat</label>
+                            <div class="input-wrapper">
+                                <div class="input-group">
+                                    <label for="email_delay_days" class="input-inside">Days</label>
+                                    <input type="number" class="textboxNumber" min="1" id="email_delay_days" name="email_delay_days" required>
+                                </div>
+                            </div>
+                            <label id="emailRepeatLabel" class="input-bottom">Every Day</label>
+                        </div>
                     </div>
-                </div>
-                <label class="input-bottom">Example: user1@gmail.com, user2@gmail.com</label>
+
+                    <h2>SMTP Server
+                        <div class="info-button">
+                            <span>i</span>
+                            <div class="tooltip">Example provided for Gmail (<a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener noreferrer">generate app password here</a>)<br>
+                                You can use multiple comma-separated recipient e-mails</div>
+                        </div>
+                    </h2>
+
+                    <div class="form-group full-row">
+                        <label for="smtp_host" class="input-top">SMTP Host</label>
+                        <div class="input-wrapper">
+                            <div class="input-group">
+                                <label for="smtp_host" class="input-inside"><br></label>
+                                <input type="text" class="textboxSmtp" id="smtp_host" name="smtp_host">
+                            </div>
+                        </div>
+                        <label class="input-bottom">Example: smtp.gmail.com</label>
+                    </div>
+
+                    <div class="form-group full-row">
+                        <label for="smtp_port" class="input-top">SMTP Port</label>
+                        <div class="input-wrapper">
+                            <div class="input-group">
+                                <label for="smtp_port" class="input-inside"><br></label>
+                                <input type="number" class="textboxSmtp" id="smtp_port" name="smtp_port">
+                            </div>
+                        </div>
+                        <label class="input-bottom">Example: 587</label>
+                    </div>
+
+                    <div class="form-group full-row">
+                        <label for="smtp_user" class="input-top">SMTP Username</label>
+                        <div class="input-wrapper">
+                            <div class="input-group">
+                                <label for="smtp_user" class="input-inside"><br></label>
+                                <input type="text" class="textboxSmtp" id="smtp_user" name="smtp_user" autocomplete="off">
+                            </div>
+                        </div>
+                        <label class="input-bottom">Example: username@gmail.com</label>
+                    </div>
+
+                    <div class="form-group full-row">
+                        <label for="smtp_pass" class="input-top">SMTP Password</label>
+                        <div class="input-wrapper">
+                            <div class="input-group">
+                                <label for="smtp_pass" class="input-inside"><br></label>
+                                <input type="password" class="textboxSmtp" id="smtp_pass" name="smtp_pass" placeholder="****************" autocomplete="off">
+                            </div>
+                        </div>
+                        <label class="input-bottom">App password</label>
+                    </div>
+
+                    <div class="form-group full-row">
+                        <label for="recipient_email" class="input-top">Recipient Email</label>
+                        <div class="input-wrapper">
+                            <div class="input-group">
+                                <label for="recipient_email" class="input-inside"><br></label>
+                                <input type="email" multiple class="textboxSmtp" id="recipient_email" name="recipient_email">
+                            </div>
+                        </div>
+                        <label class="input-bottom">Example: user1@gmail.com, user2@gmail.com</label>
+                    </div>
+
+                    <div class="submit-row">
+                        <button type="submit" id="submitSmtpButton">Save Settings</button>
+                    </div>
+                </form>
             </div>
 
-            <div class="submit-row">
-                <button type="submit" id="submitSmtpButton">SAVE SETTINGS</button>
+            <div class="features-section">
+                <h2>Settings insights</h2>
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <div class="feature-label">Easy Configuration</div>
+                        <h3>Easy configuration</h3>
+                        <p>Update your preferences in one place and keep notifications aligned with your schedule.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-label">Flexible Reminders</div>
+                        <h3>Flexible reminders</h3>
+                        <p>Choose the alert threshold and repeat interval that fit your needs.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-label">Trusted Credentials</div>
+                        <h3>Trusted credentials</h3>
+                        <p>Securely save SMTP login details so emails can be sent automatically.</p>
+                    </article>
+                </div>
             </div>
-        </form>
-    </div>
+        </section>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>

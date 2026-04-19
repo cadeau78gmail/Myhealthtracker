@@ -4,97 +4,162 @@
     <link rel="icon" href="/icons/favicon.svg" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedAssist - Config</title>
+    <title>Recovery - Medication Config</title>
     <link rel="stylesheet" href="/flatpickr/flatpickr.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="index.html" id="nav-home">
-            <img src="/icons/home.svg" alt="Home Icon" class="nav-icon"> Dashboard
-        </a>
-        <a href="config.html" id="nav-config">
-            <img src="/icons/config.svg" alt="Config Icon" class="nav-icon"> Config
-        </a>
-        <a href="planner.html" id="nav-planner">
-            <img src="/icons/planner.svg" alt="Planner Icon" class="nav-icon"> Planner
-        </a>
-        <a href="settings.html" id="nav-settings">
-            <img src="/icons/settings.svg" alt="Settings Icon" class="nav-icon"> Settings
-        </a>
-        <a href="https://github.com/njic/medassist" target="_blank" class="logo-link">
-            <div class="logo-container">
-                <img src="/icons/logo-pills.svg" alt="Logo" class="sidenav-logo">
-                <span class="sidenav-title">MedAssist</span>
-                <span class="sidenav-version">github</span>
-            </div>
-        </a>
-    </div>
-
-    <div class="header">
-        <div class="menu-icon" onclick="openNav()">
-            <span></span>
-            <span></span>
-            <span></span>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="recovery-text">Recovery</div>
         </div>
-        <a href="index.html" class="logo">MedAssist</a>
     </div>
 
-    <h1 class="top-title">Config</h1>
-
-    <div class="form-wrapper">
-        <h2><span class="medication-heading-text">Add Medication</span>
-            <div class="info-button">
-                <span>i</span>
-                <div class="tooltip">Add a new medication (or update an existing one):<br>
-                    Set a unique medication name and the amount you currently have<br>
-                    You can create one or more schedules for the same medication<br>
-                    Usage: the amount to be used at a time<br>
-                    Every: how many days between each dose<br>
-                    Time: the time to take the medication<br>
-                    Start: when to begin taking it (this will be set automatically unless you want to postpone it)</div>
+    <!-- Horizontal Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <button class="navbar-toggle" id="navbarToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <a href="index.html" class="navbar-brand">
+                <img src="/icons/logo-pills.svg" alt="Logo" class="navbar-logo">
+                <span class="brand-text">Recovery</span>
+            </a>
+            
+            <div class="navbar-menu" id="navbarMenu">
+                <a href="index.html" class="navbar-link" id="nav-home">Dashboard</a>
+                <a href="config.html" class="navbar-link active" id="nav-config">Config</a>
+                <a href="planner.html" class="navbar-link" id="nav-planner">Planner</a>
+                <a href="settings.html" class="navbar-link" id="nav-settings">Settings</a>
             </div>
-        </h2>  
-        <form id="medicationForm" class="medication-form">
-            <input type="hidden" id="medicationId" name="medicationId" value="">
-            <div class="name-row">
-                <div class="form-group name-input">
-                    <label for="name" class="input-top">Name:</label>
-                    <div class="input-wrapper">
-                        <div class="input-group">
-                            <label for="name" class="input-inside">Medication Name (Unique)</label>
-                            <input type="text" id="name" name="name" required>
-                        </div>  
+        </div>
+    </nav>
+
+    <main class="page-layout">
+        <aside class="left-panel">
+            <div class="panel-visual config-hero">
+                <img src="/images/config-hero.svg" alt="Medication configuration illustration" class="hero-image">
+                <div class="hero-label">Organize Medication Schedules</div>
+            </div>
+            <div class="panel-copy">
+                <h2>Clean medication planning</h2>
+                <p>Keep your medications organized with clear schedules, stock levels, and active reminders. The system is designed to feel like a modern health dashboard.</p>
+                <div class="panel-feature-list">
+                    <div class="panel-feature">
+                        <div class="feature-label">Inventory Overview</div>
+                        <div>
+                            <h3>Inventory overview</h3>
+                            <p>See your current stock and next expected refill in one place.</p>
+                        </div>
                     </div>
-                    <label id="nameLabel" class="input-bottom"><br></label>
-                </div>
-                <div class="form-group count-input">
-                    <label for="count" class="input-top">Count:</label>
-                    <div class="input-wrapper">
-                        <div class="input-group">
-                            <label for="count" class="input-inside">Meds</label>
-                            <input type="number" class="decimal" step="0.1" max="999999" id="count" name="count" required>
-                        </div>  
+                    <div class="panel-feature">
+                        <div class="feature-label">Smart Dosing</div>
+                        <div>
+                            <h3>Smart dosing</h3>
+                            <p>Manage recurring schedules for each medication easily and safely.</p>
+                        </div>
                     </div>
-                    <label id="countLabel" class="input-bottom"><br></label>
+                    <div class="panel-feature">
+                        <div class="feature-label">Faster Updates</div>
+                        <div>
+                            <h3>Faster updates</h3>
+                            <p>Quickly add or revise medication details to keep your plan current.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div id="scheduleContainer">
-                <!-- Dynamic schedules will be added here -->
+        </aside>
+        <section class="page-content">
+            <div class="dashboard-header">
+                <h1 class="top-title">Medication Configuration</h1>
+                <div class="dashboard-subtitle">Add and manage your medications</div>
             </div>
-            <div class="schedule-actions">
-                <button type="button" id="addScheduleBtn">Add Schedule</button>
-            </div>
-            <button type="submit" class="submit-button">Save Medication</button>
-        </form>
-    </div>
 
-    <div class="table-wrapper">
-        <h2>Medication List</h2>
-        <div id="configTableContainer"></div>
-    </div>
+            <div class="form-wrapper">
+                <div class="section-header">
+                    <h2><span class="medication-heading-text">Add Medication</span>
+                        <div class="info-button">
+                            <span>i</span>
+                            <div class="tooltip">Add a new medication (or update an existing one):<br>
+                                Set a unique medication name and the amount you currently have<br>
+                                You can create one or more schedules for the same medication<br>
+                                Usage: the amount to be used at a time<br>
+                                Every: how many days between each dose<br>
+                                Time: the time to take the medication<br>
+                                Start: when to begin taking it (this will be set automatically unless you want to postpone it)</div>
+                        </div>
+                    </h2>
+                </div>
+                <form id="medicationForm" class="medication-form">
+                    <input type="hidden" id="medicationId" name="medicationId" value="">
+                    <div class="name-row">
+                        <div class="form-group name-input">
+                            <label for="name" class="input-top">Medication Name:</label>
+                            <div class="input-wrapper">
+                                <div class="input-group">
+                                    <label for="name" class="input-inside">Unique Name</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+                            </div>
+                            <label id="nameLabel" class="input-bottom"><br></label>
+                        </div>
+                        <div class="form-group count-input">
+                            <label for="count" class="input-top">Current Stock:</label>
+                            <div class="input-wrapper">
+                                <div class="input-group">
+                                    <label for="count" class="input-inside">Total Pills</label>
+                                    <input type="number" class="decimal" step="0.1" max="999999" id="count" name="count" required>
+                                </div>
+                            </div>
+                            <label id="countLabel" class="input-bottom"><br></label>
+                        </div>
+                    </div>
+                    <div id="scheduleContainer">
+                        <!-- Dynamic schedules will be added here -->
+                    </div>
+                    <div class="schedule-actions">
+                        <button type="button" id="addScheduleBtn">+ Add Dosage Schedule</button>
+                    </div>
+                    <button type="submit" class="submit-button">Save Medication</button>
+                </form>
+            </div>
+
+            <div class="table-wrapper">
+                <div class="section-header">
+                    <h2>Your Medications</h2>
+                    <div class="table-info">
+                        <span id="medicationCount">0 medications</span>
+                    </div>
+                </div>
+                <div id="configTableContainer"></div>
+            </div>
+
+            <div class="features-section">
+                <h2>Config highlights</h2>
+                <div class="feature-grid">
+                    <article class="feature-card">
+                        <div class="feature-label">Medication Log</div>
+                        <h3>Clear medication log</h3>
+                        <p>Maintain a clean list of each item, its dose, schedule and stock level.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-label">Fast Setup</div>
+                        <h3>Fast setup</h3>
+                        <p>Add new medicines and schedules with minimal clicks.</p>
+                    </article>
+                    <article class="feature-card">
+                        <div class="feature-label">Better Visibility</div>
+                        <h3>Better visibility</h3>
+                        <p>Spot medication gaps and upcoming changes before they happen.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script src="/flatpickr/flatpickr.min.js"></script>
     <script src="/script.js"></script>

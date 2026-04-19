@@ -1,4 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Splash Screen Animation
+    const splashScreen = document.getElementById('splash-screen');
+    if (splashScreen) {
+        // Show splash screen for 3 seconds, then fade out
+        setTimeout(() => {
+            splashScreen.classList.add('fade-out');
+            // Remove splash screen from DOM after fade animation completes
+            setTimeout(() => {
+                splashScreen.remove();
+            }, 800);
+        }, 3000);
+    }
+
     const medicationForm = document.getElementById('medicationForm');
     const emptyTitle = document.getElementById('empty-title');
     const overviewTitle = document.getElementById('overview-title');
@@ -932,7 +945,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
             // Create header row
             const headerRow = document.createElement('tr');
-            const headers = ['Name', 'Meds Left', 'Days Left', 'Resupply Before', 'Usage', 'Every', 'Time', 'Starting From', 'Last Updated → Count', 'Actions'];
+            const headers = ['Name', 'Meds Left', 'Days Left', 'Resupply Before', 'Usage', 'Every', 'Time', 'Starting From', 'Last Updated | Count', 'Actions'];
             headers.forEach(headerText => {
                 const th = document.createElement('th');
                 th.textContent = headerText;
@@ -954,7 +967,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${JSON.parse(med.medication_every).join('<br>')}</td>
                     <td>${JSON.parse(med.medication_start).map(formatTime).join('<br>')}</td>
                     <td>${JSON.parse(med.medication_start).map(formatShortDate).join('<br>')}</td>
-                    <td>${formatDateTime(med.medication_update) + " →" + med.medication_count}</td>
+                    <td>${formatDateTime(med.medication_update) + " | " + med.medication_count}</td>
                     <td>
                         <div class="actions-group">
                             <button class="updateBtn" data-id="${med.medication_name}">Update</button>
@@ -1011,16 +1024,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch('/fetchConfig');
                 const medications = await response.json();
 
+                // Update dashboard stats
+                updateDashboardStats(medications);
+
                 const overviewTableContainer = document.getElementById('overviewTable');
                 overviewTableContainer.innerHTML = ''; // Clear any existing content
-        
+
                 // Create a new container for the table
                 const tableContainer = document.createElement('div');
                 tableContainer.classList.add('table-container'); // Add the 'table-container' class
-        
+
                 // Create a new table element
                 const overviewTable = document.createElement('table');
-        
+
                 // Create table head
                 const thead = document.createElement('thead');
                 thead.innerHTML = `
@@ -1031,10 +1047,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         <th>Resupply Before</th>
                     </tr>
                 `;
-        
+
                 // Create table body
                 const tbody = document.createElement('tbody');
-        
+
                 // Process and sort medications by Days Left
                 const processedMedications = medications.map(med => {
                     const medsLeft = med.medsLeft;
@@ -1048,7 +1064,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Handle invalid or non-date values like "∞" or "1+ Year"
                         orderBefore = med.orderBefore; // Keep it as a string (e.g., "∞")
                     }
-        
+
                     return {
                         name: med.medication_name,
                         medsLeft,
@@ -1060,30 +1076,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (typeof a.daysLeft === 'number' && typeof b.daysLeft === 'number') {
                         return a.daysLeft - b.daysLeft;
                     }
-                
+
                     // Handle "1+ Year" and "∞" as special cases
                     const customSort = (val) => {
                         if (val === "365+") return 1;  // "1+ Year" should come after numbers
                         if (val === "∞") return 2;         // "∞" should come last
                         return 0;  // For numbers, stay in normal order
                     };
-                
+
                     // Compare based on custom sort logic
                     const aSortValue = customSort(a.daysLeft);
                     const bSortValue = customSort(b.daysLeft);
-                
+
                     // If both are numbers or both are strings, proceed with normal sorting
                     if (aSortValue === 0 && bSortValue === 0) {
                         return a.daysLeft - b.daysLeft; // Numbers sorted normally
                     }
-                
+
                     return aSortValue - bSortValue; // Special handling for "1+ Year" and "∞"
                 });
-        
+
                 // Populate the tbody with processed medications
                 processedMedications.forEach(item => {
                     const row = document.createElement('tr');
-        
+
                     row.innerHTML = `
                         <td>${item.name}</td>
                         <td>${item.medsLeft}</td>
@@ -1091,28 +1107,103 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${formatDateTime(item.orderBefore)}</td>
 
                     `;
-        
+
                     tbody.appendChild(row);
                 });
-        
+
                 // Append thead and tbody to the new table
                 overviewTable.appendChild(thead);
                 overviewTable.appendChild(tbody);
-        
+
                 // Append the new table to the table container
                 tableContainer.appendChild(overviewTable);
-        
+
                 // Append the table container to the overviewTableContainer
                 overviewTableContainer.appendChild(tableContainer);
 
                 if (medications.length > 0) {
                     overviewTableContainer.classList.remove('hidden');
-                    overviewTitle.classList.remove('hidden');
+                    document.getElementById('overviewWrapper').classList.remove('hidden');
                 }
-        
+
             } catch (error) {
                 console.error('Error fetching overview table:', error);
             }
+        };
+
+        // Function to update dashboard stats and visibility
+        const updateDashboardStats = (medications) => {
+            const welcomeSection = document.getElementById('welcomeSection');
+            const statsSection = document.getElementById('statsSection');
+            const alertSection = document.getElementById('alertSection');
+            const quickActions = document.getElementById('quickActions');
+            const overviewWrapper = document.getElementById('overviewWrapper');
+            const clockWrapper = document.getElementById('clockWrapper');
+
+            if (medications.length === 0) {
+                // Show welcome section for empty state
+                welcomeSection.style.display = 'flex';
+                statsSection.style.display = 'none';
+                alertSection.style.display = 'none';
+                quickActions.style.display = 'none';
+                overviewWrapper.classList.add('hidden');
+                clockWrapper.classList.add('hidden');
+                return;
+            }
+
+            // Hide welcome section and show dashboard
+            welcomeSection.style.display = 'none';
+            statsSection.style.display = 'block';
+            quickActions.style.display = 'block';
+
+            // Update stats
+            const totalMeds = medications.length;
+            const lowStockMeds = medications.filter(med =>
+                med.daysLeft !== "∞" && med.daysLeft !== "365+" && med.daysLeft <= 10
+            ).length;
+
+            // Count upcoming doses (next 24 hours)
+            let upcomingDoses = 0;
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+
+            // Fetch clock table data for upcoming doses
+            fetch('/fetchClockTable').then(response => response.json()).then(clockData => {
+                clockData.forEach(med => {
+                    med.clockList.forEach(clock => {
+                        const doseTime = new Date(clock.scheduledTime);
+                        if (doseTime >= now && doseTime <= tomorrow && clock.usage !== 'X') {
+                            upcomingDoses++;
+                        }
+                    });
+                });
+
+                document.getElementById('totalMeds').textContent = totalMeds;
+                document.getElementById('lowStockMeds').textContent = lowStockMeds;
+                document.getElementById('upcomingDoses').textContent = upcomingDoses;
+            });
+
+            // Check for reorder alerts
+            fetch('/medications/low-stock')
+                .then(response => response.json())
+                .then(data => {
+                    const { names, username } = data;
+                    const reorderMessage = document.getElementById('reorderMessage');
+
+                    if (names.length > 0) {
+                        const formattedNames = names.slice(0, -1).join(', ') +
+                            (names.length > 1 ? ' & ' : '') + names.slice(-1);
+                        reorderMessage.innerHTML = `It's time to reorder <strong>${formattedNames}</strong>!`;
+                        alertSection.style.display = 'block';
+                    } else {
+                        alertSection.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching low-stock medications:', error);
+                    alertSection.style.display = 'none';
+                });
         };
 
         fetchOverviewTable();
@@ -1824,7 +1915,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 logo.textContent = topTitle.textContent;  // Change logo text to the title
                 logo.classList.add('non-bold'); // Make it non-bold
             } else {
-                logo.textContent = 'MedAssist';  // Revert back to 'MedAssist'
+                logo.textContent = 'Recovery';  // Revert back to 'Recovery'
                 logo.classList.remove('non-bold'); // Make it bold again
             }
         });
@@ -1832,70 +1923,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-let startX = 0;  // Track the X coordinate where the swipe started
-let isSwiping = false;  // Track if the user is performing a swipe action
+// Touch and navigation setup (touch handlers removed for navbar)
 
-// Set up the event listeners for swipe detection
-document.addEventListener('touchstart', handleTouchStart);
-document.addEventListener('touchmove', handleTouchMove);
-document.addEventListener('touchend', handleTouchEnd);
-
-/* Open the side navigation */
-function openNav() {
-    document.getElementById("mySidenav").style.width = "270px";
-
-    // Delay adding the event listener to prevent immediate closing
-    setTimeout(() => {
-        document.addEventListener('click', closeOnOutsideClick);
-    }, 100);  // Delay by 100 milliseconds
-}
-
-/* Close the side navigation */
-function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-
-    // Remove the event listener when the navigation is closed
-    document.removeEventListener('click', closeOnOutsideClick);
-}
-
-/* Close side navigation if clicked outside */
-function closeOnOutsideClick(event) {
-    const sidenav = document.getElementById("mySidenav");
-
-    // Check if sidenav is open (width is not 0)
-    if (sidenav.style.width !== "0px" && sidenav.style.width !== "") {
-        // If the click is outside the sidenav and not on the button that opens it
-        if (!sidenav.contains(event.target) && event.target !== document.querySelector(".openNavButton")) {
-            closeNav();
+/* Navbar Toggle Functionality */
+document.addEventListener('DOMContentLoaded', () => {
+    const navbarToggle = document.getElementById('navbarToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    
+    // Toggle navbar menu
+    if (navbarToggle) {
+        navbarToggle.addEventListener('click', () => {
+            navbarToggle.classList.toggle('active');
+            navbarMenu.classList.toggle('active');
+        });
+    }
+    
+    // Close menu when a link is clicked
+    const navbarLinks = document.querySelectorAll('.navbar-link');
+    navbarLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navbarToggle.classList.remove('active');
+            navbarMenu.classList.remove('active');
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.navbar') && navbarMenu && navbarMenu.classList.contains('active')) {
+            navbarToggle.classList.remove('active');
+            navbarMenu.classList.remove('active');
         }
+    });
+});
+
+/* Open the side navigation (deprecated - kept for compatibility) */
+function openNav() {
+    // Redirect to navbar functionality
+    const navbarToggle = document.getElementById('navbarToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (navbarToggle && navbarMenu) {
+        navbarToggle.classList.add('active');
+        navbarMenu.classList.add('active');
     }
 }
 
-/* Handle touch start event */
-function handleTouchStart(event) {
-    startX = event.touches[0].clientX;
-    isSwiping = startX < 30;  // Start swipe if it's within 30px from the left edge
-}
-
-/* Handle touch move event */
-function handleTouchMove(event) {
-    if (!isSwiping) return;  // Only proceed if swiping
-
-    const touchX = event.touches[0].clientX;
-    const swipeDistance = touchX - startX;
-
-    // Open the nav if the swipe distance is sufficient
-    if (swipeDistance > 100) {  // Swipe distance threshold for opening the nav
-        openNav();
-        isSwiping = false;  // Reset swiping status after opening
+/* Close the side navigation (deprecated - kept for compatibility) */
+function closeNav() {
+    // Redirect to navbar functionality
+    const navbarToggle = document.getElementById('navbarToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (navbarToggle && navbarMenu) {
+        navbarToggle.classList.remove('active');
+        navbarMenu.classList.remove('active');
     }
 }
 
-/* Handle touch end event */
-function handleTouchEnd() {
-    // Reset swiping state on touch end
-    isSwiping = false;
-}
+/* Handle touch start event (deprecated - removed for navbar) */
+// Removed as it's no longer needed with horizontal navbar
+
+/* Handle touch move event (deprecated - removed for navbar) */
+// Removed as it's no longer needed with horizontal navbar
+
+/* Handle touch end event (deprecated - removed for navbar) */
+// Removed as it's no longer needed with horizontal navbar
 
 // Get the current URL path
 const currentPath = window.location.pathname;
@@ -1924,4 +2014,3 @@ navLinks.forEach(link => {
         link.classList.remove('active');
     }
 });
-

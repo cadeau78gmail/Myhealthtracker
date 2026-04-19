@@ -655,7 +655,7 @@ function renderPlannerHtmlTable(medicationsWithPlannerData, medications, startDa
             </tbody>
         </table>
         <br>
-        <div>Wherever you go, whatever you do, MediAssist will be there for you!<br>&#10084; &#9992; &#128663; &#128646; &#127956; &#10052; &#127938; &#127757;<br>Have an awesome trip!<br>Your MedAssist<br><br>Sent on: ${formattedServerTime}  (server time)</div>
+        <div>Wherever you go, whatever you do, Recovery will be there for you!<br>&#10084; &#9992; &#128663; &#128646; &#127956; &#10052; &#127938; &#127757;<br>Have an awesome trip!<br>Your Recovery<br><br>Sent on: ${formattedServerTime}  (server time)</div>
     `;
 
     // Return the complete HTML string
@@ -705,7 +705,7 @@ function sendPlannerEmail(startDate, endDate) {
                 
                 // Define email options
                 const mailOptions = {
-                    from: `"MedAssist" <${smtpConfig.smtp_user}>`,
+                    from: `"Recovery" <${smtpConfig.smtp_user}>`,
                     to: smtpConfig.recipient_email,
                     subject: dayDifference === 1 
                         ? `Trip Planner - 1 day (${formattedStartDate})` 
@@ -789,7 +789,7 @@ function startCronJob(smtpConfig) {
                             const formattedDate = formatLocalDate(now.toISOString()); // Format the current date
 
                             transporter.sendMail({
-                                from: `"MedAssist" <${smtpConfig.smtp_user}>`,
+                                from: `"Recovery" <${smtpConfig.smtp_user}>`,
                                 to: smtpConfig.recipient_email,
                                 subject: `Reorder Reminder ${formattedDate}`,
                                 html: pillTableHTML, // Send the full table
@@ -896,7 +896,7 @@ function renderHtmlTable(medications, smtpConfig) {
             </tbody>
         </table>
         <br>
-        <div>Wherever you go, whatever you do, MediAssist will be there for you!<br>&#10084; &#128137; &#129465; &#128646; &#127956; &#10052; &#127938; &#127757;<br>Enjoy your drugs!<br>Your MedAssist<br><br>Sent on: ${formattedServerTime}  (server time)</div>
+        <div>Wherever you go, whatever you do, Recovery will be there for you!<br>&#10084; &#128137; &#129465; &#128646; &#127956; &#10052; &#127938; &#127757;<br>Enjoy your drugs!<br>Your Recovery<br><br>Sent on: ${formattedServerTime}  (server time)</div>
     `;
 
     // Return the complete HTML string
