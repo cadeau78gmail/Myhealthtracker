@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="/icons/favicon.svg" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Assistant - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #00b4d8 0%, #48cae4 60%, #90e0ef 100%);
+        }
+        .login-card {
+            width: min(420px, 92vw);
+            padding: 2.5rem;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            color: #0f172a;
+        }
+        .login-card h1 {
+            margin: 0 0 2rem;
+            font-size: 1.75rem;
+            letter-spacing: -0.02em;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .login-card p {
+            margin: 0 0 1.75rem;
+            color: #475569;
+            line-height: 1.6;
+        }
+        .login-field {
+            display: grid;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .login-field label {
+            font-size: 0.95rem;
+            color: #334155;
+        }
+        .login-field input {
+            width: 100%;
+            padding: 0.95rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+        .login-actions {
+            display: grid;
+            gap: 0.85rem;
+        }
+        .login-actions button,
+        .login-actions a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.95rem 1rem;
+            border-radius: 999px;
+            border: none;
+            background: #0077b6;
+            color: #ffffff;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .login-actions button:hover,
+        .login-actions a:hover {
+            transform: translateY(-1px);
+            background: #0096c7;
+        }
+        .login-message {
+            margin-top: 1rem;
+            color: #d00000;
+            font-size: 0.95rem;
+        }
+        .login-footer {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: #64748b;
+        }
+        .login-footer a {
+            color: #0077b6;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <article class="login-card">
+        <header>
+            <h1>Sign In</h1>
+        </header>
+        <form id="loginForm">
+            <div class="login-field">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Your name" required>
+            </div>
+            <div class="login-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+            <div class="login-actions">
+                <button type="submit">Continue</button>
+                <a href="index.html" id="openDashboard">Open Dashboard</a>
+            </div>
+            <p class="login-message" id="loginMessage"></p>
+        </form>
+        <p class="login-footer">If you do not have an account yet, entering a name and email will create one locally in your browser.</p>
+    </article>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginForm = document.getElementById('loginForm');
+            const loginMessage = document.getElementById('loginMessage');
+            const storedName = localStorage.getItem('recoveryUserName');
+            const storedEmail = localStorage.getItem('recoveryUserEmail');
+            const nameInput = document.getElementById('name');
+            const emailInput = document.getElementById('email');
+            const openDashboard = document.getElementById('openDashboard');
+
+            if (storedName && storedEmail) {
+                nameInput.value = storedName;
+                emailInput.value = storedEmail;
+                openDashboard.textContent = 'Login to Dashboard';
+            } else {
+                openDashboard.textContent = 'Create Account';
+            }
+
+            loginForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
+                if (!name || !email) {
+                    loginMessage.textContent = 'Please enter both name and email.';
+                    return;
+                }
+
+                if (storedName && storedEmail && (storedName !== name || storedEmail !== email)) {
+                    loginMessage.textContent = 'Name or email does not match your saved account.';
+                    return;
+                }
+
+                localStorage.setItem('recoveryUserName', name);
+                localStorage.setItem('recoveryUserEmail', email);
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
