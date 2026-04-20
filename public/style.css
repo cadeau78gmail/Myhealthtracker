@@ -553,6 +553,95 @@ body {
   margin-bottom: 8px;
 }
 
+.dashboard-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.dashboard-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  align-items: flex-start;
+}
+
+.dashboard-summary {
+  flex: 1 1 minmax(280px, 1fr);
+  display: grid;
+  gap: 18px;
+  min-width: 260px;
+}
+
+.remaining-chart-card {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 420px;
+  min-width: 280px;
+}
+
+@media (max-width: 1120px) {
+  .dashboard-top {
+    flex-direction: column;
+  }
+
+  .remaining-chart-card {
+    max-width: 100%;
+    min-width: auto;
+  }
+}
+
+.dashboard-activity {
+  margin: 24px 0;
+}
+
+.chart-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-card h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--brand-primary);
+  margin: 0 0 16px 0;
+}
+
+.chart-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
+
+.chart-placeholder svg {
+  width: 100%;
+  height: auto;
+}
+
+.chart-subtitle {
+  font-size: 11px; /* Reduced from 12px */
+  color: var(--text-secondary);
+  margin: 0 0 12px 0;
+  font-weight: 400;
+  text-align: center;
+}
+
+.dashboard-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(320px, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1120px) {
+  .dashboard-body {
+    grid-template-columns: 1fr;
+  }
+}
+
 .top-title {
   font-family: 'Inter', sans-serif;
   font-size: 24px;
@@ -622,7 +711,7 @@ h2 {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 20px;
   box-shadow: var(--shadow-sm);
   margin-bottom: 16px;
 }
@@ -1254,49 +1343,142 @@ input:checked + .slider::before { transform: translateX(20px); }
 }
 
 /* Stats */
-.stats-section { 
-  padding: 24px; 
+.stats-section {
+  padding: 24px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xs);
   margin-bottom: 12px;
 }
-.stats-section h2 {
-  font-size: 16px;
+.stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.stats-header h2 {
+  font-size: 18px;
   font-weight: 700;
-  margin: 0 0 18px;
+  margin: 0;
   color: var(--brand-primary);
-  border-bottom: 2px solid var(--brand-light);
-  padding-bottom: 12px;
+}
+.stats-subtext {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.stats-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  background: var(--bg-muted);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 .stat-card {
   background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-muted) 100%);
-  border: 2px solid var(--brand-light);
+  border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 18px 20px;
+  padding: 14px 16px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  box-shadow: var(--shadow-sm);
-  transition: all .3s ease;
-}
-
-.stat-card:hover {
-  border-color: var(--brand-mid);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
-}
   gap: 12px;
   box-shadow: var(--shadow-xs);
-  transition: box-shadow .15s;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-.stat-card:hover { box-shadow: var(--shadow-sm); }
+.stat-icon {
+  width: 34px;
+  height: 34px;
+}
+.stat-number { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1; }
+.stat-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.risk-score-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+.risk-score-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.risk-score-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--brand-primary);
+}
+.risk-score-header p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.risk-score-pill {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(153, 27, 27, 0.12);
+  color: var(--danger);
+  font-size: 12px;
+  font-weight: 700;
+}
+.risk-score-pill.critical {
+  background: rgba(153, 27, 27, 0.12);
+  color: var(--danger);
+}
+.risk-score-pill.low {
+  background: rgba(237, 137, 54, 0.12);
+  color: #d97706;
+}
+.risk-score-pill.good {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+}
+.risk-score-body {
+  display: grid;
+  place-items: center;
+  padding: 12px 0;
+}
+.risk-score-ring {
+  position: relative;
+  width: 170px;
+  height: 170px;
+}
+.risk-score-ring svg {
+  width: 100%;
+  height: 100%;
+}
+.risk-score-number {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--brand-primary);
+}
+.risk-score-meta {
+  margin-top: 16px;
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-align: center;
+}
+
 .stat-icon {
   width: 40px; height: 40px;
   background: var(--brand-light);
@@ -1304,8 +1486,8 @@ input:checked + .slider::before { transform: translateX(20px); }
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.stat-number { font-size: 22px; font-weight: 600; color: var(--text-primary); line-height: 1; }
-.stat-label  { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .05em; margin-top: 3px; }
+.stat-number { font-size: 26px; font-weight: 700; color: var(--text-primary); line-height: 1; }
+.stat-label  { font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .06em; margin-top: 4px; }
 
 /* Alerts */
 .alert-section { padding: 0; }
@@ -1345,6 +1527,47 @@ input:checked + .slider::before { transform: translateX(20px); }
 .alert-content p, .alert-content div { font-size: 12.5px; color: #78350F; line-height: 1.5; }
 .alert-card.warning .alert-content p,
 .alert-card.warning .alert-content div { color: #7F1D1D; }
+
+/* Toast messages */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999;
+  pointer-events: none;
+}
+.toast {
+  max-width: min(360px, calc(100vw - 48px));
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .22s ease, transform .22s ease;
+  pointer-events: auto;
+}
+.toast--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.toast--success {
+  border-color: rgba(22,101,52,.2);
+  background: var(--success-bg);
+}
+.toast--danger {
+  border-color: rgba(153,27,27,.2);
+  background: var(--danger-bg);
+}
+.toast--info {
+  border-color: rgba(15,76,129,.2);
+  background: var(--info-bg);
+}
 
 /* Reorder form */
 #reorderForm p {
@@ -1584,4 +1807,65 @@ input:checked + .slider::before { transform: translateX(20px); }
   .welcome-card { padding: 24px 20px; }
 
   .section-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+/* ─── NEW DASHBOARD LAYOUT ─── */
+
+/* 1. Aligns the Stats (left) and the Risk Graph (right) */
+.dashboard-top-row {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    align-items: stretch;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+/* 2. Gives the container for the 3 cards more room */
+.dashboard-summary {
+    flex: 2.5; 
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 3. Forces the 3 cards (Total, Attention, Upcoming) into a horizontal row */
+.stats-grid {
+    display: flex;
+    flex-direction: row; 
+    gap: 12px;
+    width: 100%;
+}
+
+/* 4. Ensures each card is equal in size and looks like the screenshot */
+.stat-card {
+    flex: 1;
+    min-width: 120px;
+    padding: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 5. Keeps the Risk Score card appropriately sized on the right */
+.remaining-chart-card {
+    flex: 1;
+    min-width: 280px;
+}
+
+.risk-score-card {
+    height: 100%;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+/* 6. Responsive Fix: Stack everything vertically on small screens */
+@media (max-width: 1100px) {
+    .dashboard-top-row, .stats-grid {
+        flex-direction: column;
+    }
 }

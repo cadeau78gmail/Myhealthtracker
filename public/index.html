@@ -113,85 +113,105 @@
                 </div>
             </div>
 
-            <!-- Stats Cards -->
-            <div class="stats-section" id="statsSection" style="display: none;">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3ZM10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" fill="#38a169"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-number" id="totalMeds">0</div>
-                            <div class="stat-label">Total Medications</div>
-                        </div>
+            <div class="dashboard-grid">
+                <div class="dashboard-top-row">
+    <div class="dashboard-summary">
+        <div class="stats-section" id="statsSection">
+            <div class="stats-header">
+                <div>
+                    <h2>Current Risk</h2>
+                    <div class="stats-subtext">Daily Overview</div>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-number" id="totalMeds">0</div>
+                        <div class="stat-label">Total Medications</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z" fill="#ed8936"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-number" id="lowStockMeds">0</div>
-                            <div class="stat-label">Need Attention</div>
-                        </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-number" id="lowStockMeds">0</div>
+                        <div class="stat-label">Need Attention</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 11.99 2ZM12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20ZM12.5 7H11V13L16.25 16.15L17 14.92L12.5 12.25V7Z" fill="#00b4d8"/>
-                            </svg>
-                        </div>
-                        <div class="stat-content">
-                            <div class="stat-number" id="upcomingDoses">0</div>
-                            <div class="stat-label">Upcoming Doses</div>
-                        </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-content">
+                        <div class="stat-number" id="upcomingDoses">0</div>
+                        <div class="stat-label">Upcoming Doses</div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Reorder Alert -->
-            <div class="alert-section" id="alertSection" style="display: none;">
-                <div class="alert-card warning">
-                    <div class="alert-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z" fill="#ed8936"/>
-                        </svg>
-                    </div>
-                    <div class="alert-content">
-                        <h3>Reorder Reminder</h3>
-                        <div id="reorderMessage"></div>
-                    </div>
+        <div class="alert-section" id="alertSection" style="display: none;">
+            <div class="alert-card warning">
+                <div id="reorderMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="remaining-chart-card">
+        <div class="chart-card risk-score-card">
+            <div class="risk-score-header">
+                <div>
+                    <h3>Stock Level</h3>
+                    <p>Remaining pills overview</p>
+                </div>
+                <div class="risk-score-pill high">Refill Soon</div>
+            </div>
+            <div class="risk-score-body">
+                <div class="risk-score-ring">
+                    <svg viewBox="0 0 160 160" role="img" aria-label="Stock level gauge">
+                        <circle cx="80" cy="80" r="70" fill="none" stroke="var(--bg-muted)" stroke-width="18"/>
+                        <circle cx="80" cy="80" r="70" fill="none" stroke="var(--brand-primary)" stroke-width="18" stroke-dasharray="440" stroke-dashoffset="110" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+                    </svg>
+                    <div class="risk-score-number">75%</div>
                 </div>
             </div>
+            <div class="risk-score-meta">Based on average days remaining</div>
+        </div>
+    </div>
+</div>
 
-            <!-- Medication Overview -->
-            <div class="table-wrapper hidden" id="overviewWrapper">
-                <div class="section-header">
-                    <h2>Medication Overview</h2>
-                    <a href="config.html" class="section-action">Manage Medications</a>
-                </div>
-                <div id="overviewTable" class="hidden"></div>
-            </div>
+<div class="dashboard-activity">
+    <div class="chart-card">
+        <h3>User Activity</h3>
+        <p class="chart-subtitle">Cumulative medications managed over the last 7 days</p>
+        <div class="chart-placeholder">
+            <!-- Activity graph will be rendered here by JavaScript -->
+        </div>
+    </div>
+</div>
 
-            <!-- Upcoming Schedules -->
-            <div class="table-wrapper hidden" id="clockWrapper">
-                <div class="section-header">
-                    <h2>Upcoming Schedules</h2>
-                    <div class="schedule-actions">
-                        <button id="showHistoryBtn">Show Past</button>
-                        <button id="showFutureBtn">Show Future</button>
+                <div class="dashboard-body">
+                    <div class="table-wrapper hidden" id="overviewWrapper">
+                        <div class="section-header">
+                            <h2>Medication Overview</h2>
+                            <a href="config.html" class="section-action">Manage Medications</a>
+                        </div>
+                        <div id="overviewTable" class="hidden"></div>
+                    </div>
+
+                    <div class="table-wrapper hidden" id="clockWrapper">
+                        <div class="section-header">
+                            <h2>Upcoming Schedules</h2>
+                            <div class="schedule-actions">
+                                <button id="showHistoryBtn">Show Past</button>
+                                <button id="showFutureBtn">Show Future</button>
+                            </div>
+                        </div>
+                        <div id="clockTable" class="hidden"></div>
                     </div>
                 </div>
-                <div id="clockTable" class="hidden"></div>
-            </div>
 
-            <!-- Quick Actions -->
-            <div class="quick-actions" id="quickActions" style="display: none;">
-                <h2>Quick Actions</h2>
-                <div class="actions-grid">
+                <div class="quick-actions" id="quickActions" style="display: none;">
+                    <h2>Quick Actions</h2>
+                    <div class="actions-grid">
                     <a href="config.html" class="action-card">
                         <div class="action-icon">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -251,6 +271,7 @@
         </section>
     </main>
 
+    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
     <script src="/script.js"></script>
 </body>
 </html>

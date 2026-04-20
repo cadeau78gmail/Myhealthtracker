@@ -82,6 +82,37 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${hours}:${minutes}`; // Format: HH.MM
     };
 
+    const toastContainer = document.getElementById('toastContainer');
+
+    const showToast = (message, type = 'success') => {
+        if (!toastContainer) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast toast--${type}`;
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+        window.requestAnimationFrame(() => toast.classList.add('toast--visible'));
+
+        setTimeout(() => {
+            toast.classList.remove('toast--visible');
+            toast.addEventListener('transitionend', () => toast.remove(), { once: true });
+        }, 3600);
+    };
+
+    const flashDashboardToast = () => {
+        const pendingMessage = localStorage.getItem('recoveryDashboardToast');
+        if (pendingMessage) {
+            showToast(pendingMessage, 'success');
+            localStorage.removeItem('recoveryDashboardToast');
+        }
+    };
+
+    // Show any pending toast on pages that load after a save
+    flashDashboardToast();
+
     // Function to format time and date
     const formatClockTime = (time) => {
         return time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -849,6 +880,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 oldName: oldMedicationName, // Use old name for the update
             };
             
+            let response;
+            
             // Check if updating or adding a new medication
             if (medicationId) {
                 // Update the existing medication
@@ -861,12 +894,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Handle update response
                 const responseData = await response.json();
                 if (response.ok) {
-                    alert(responseData.success || 'Medication updated successfully');
+                    showToast(responseData.success || 'Medication updated successfully', 'success');
                     fetchConfigTable(); // Refresh the medication list
                     exitUpdateMode(); // Exit update mode
                 } else {
                     const errorData = await response.json();
-                    alert(errorData.error || 'Error updating medication');
+                    showToast(errorData.error || 'Error updating medication', 'danger');
                 }
             } else {
                 // For adding new medication
@@ -879,7 +912,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Handle add response
                 const responseData = await response.json();
                 if (response.ok) {
-                    alert(responseData.success || 'Medication saved successfully');
+                    const successMessage = responseData.success || 'Medication saved successfully';
+                    showToast(successMessage, 'success');
+                    localStorage.setItem('recoveryDashboardToast', successMessage);
                     event.target.reset();
                     document.getElementById('medicationId').value = ''; // Clear the hidden input for ID
                     document.getElementById('scheduleContainer').innerHTML = '';
@@ -889,7 +924,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     fetchConfigTable();
                 } else {
                     const errorData = await response.json();
-                    alert(errorData.error || 'Error saving medication');
+                    showToast(errorData.error || 'Error saving medication', 'danger');
                 }
             }
         });
@@ -1150,6 +1185,145 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        // Function to update activity graph
+        const updateActivityGraph = (medications) => {
+            const activityContainer = document.querySelector('.dashboard-activity .chart-placeholder');
+            if (!activityContainer) return;
+
+            // Create activity data for the last 7 days
+            const now = new Date();
+            const activityData = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(now);
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                
+                // Count medications updated on or before this date
+                const activeMeds = medications.filter(med => {
+                    const updateDate = new Date(med.medication_update);
+                    return updateDate.toISOString().split('T')[0] <= dateStr;
+                }).length;
+                
+                activityData.push({
+                    date: date,
+                    count: activeMeds,
+                    label: date.toLocaleDateString('en-US', { weekday: 'short' })
+                });
+            }
+
+            // Create SVG line chart
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '180');
+            svg.setAttribute('viewBox', '0 0 400 180');
+
+            const maxCount = Math.max(...activityData.map(d => d.count), 1);
+            const padding = 30; // Reduced padding for smaller chart
+            const chartWidth = 400 - padding * 2;
+            const chartHeight = 120; // Reduced chart area height
+
+            // Draw grid lines
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (chartHeight / 5) * i;
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', padding);
+                line.setAttribute('y1', y);
+                line.setAttribute('x2', 400 - padding);
+                line.setAttribute('y2', y);
+                line.setAttribute('stroke', 'var(--border)');
+                line.setAttribute('stroke-width', '1');
+                svg.appendChild(line);
+            }
+
+            // Draw activity line
+            const pathData = activityData.map((point, index) => {
+                const x = padding + (chartWidth / 6) * index;
+                const y = padding + chartHeight - (point.count / maxCount) * chartHeight;
+                return `${index === 0 ? 'M' : 'L'} ${x} ${y}`;
+            }).join(' ');
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', pathData);
+            path.setAttribute('stroke', 'var(--brand-primary)');
+            path.setAttribute('stroke-width', '1'); // Reduced from 2 to 1
+            path.setAttribute('fill', 'none');
+            svg.appendChild(path);
+
+            // Draw data points
+            activityData.forEach((point, index) => {
+                const x = padding + (chartWidth / 6) * index;
+                const y = padding + chartHeight - (point.count / maxCount) * chartHeight;
+                
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', x);
+                circle.setAttribute('cy', y);
+                circle.setAttribute('r', '2'); // Reduced from 3 to 2
+                circle.setAttribute('fill', 'var(--brand-primary)');
+                svg.appendChild(circle);
+
+                // Add value label above each data point
+                const valueLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                valueLabel.setAttribute('x', x);
+                valueLabel.setAttribute('y', y - 8); // Position above the point
+                valueLabel.setAttribute('text-anchor', 'middle');
+                valueLabel.setAttribute('font-size', '9'); // Reduced from 10
+                valueLabel.setAttribute('font-weight', '500');
+                valueLabel.setAttribute('fill', 'var(--text-primary)');
+                valueLabel.textContent = point.count;
+                svg.appendChild(valueLabel);
+            });
+
+            // Add labels
+            activityData.forEach((point, index) => {
+                const x = padding + (chartWidth / 6) * index;
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', x);
+                text.setAttribute('y', 165); // Adjusted for smaller chart
+                text.setAttribute('text-anchor', 'middle');
+                text.setAttribute('font-size', '10'); // Reduced from 11
+                text.setAttribute('fill', 'var(--text-secondary)');
+                text.textContent = point.label;
+                svg.appendChild(text);
+            });
+
+            // Add axis labels
+            // X-axis label
+            const xAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            xAxisLabel.setAttribute('x', 200);
+            xAxisLabel.setAttribute('y', 175); // Adjusted for smaller viewBox
+            xAxisLabel.setAttribute('text-anchor', 'middle');
+            xAxisLabel.setAttribute('font-size', '11'); // Reduced from 12
+            xAxisLabel.setAttribute('font-weight', '600');
+            xAxisLabel.setAttribute('fill', 'var(--text-primary)');
+            xAxisLabel.textContent = 'Days';
+            svg.appendChild(xAxisLabel);
+
+            // Y-axis label
+            const yAxisLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            yAxisLabel.setAttribute('x', 12); // Adjusted for smaller padding
+            yAxisLabel.setAttribute('y', 75); // Adjusted for smaller chart
+            yAxisLabel.setAttribute('text-anchor', 'middle');
+            yAxisLabel.setAttribute('font-size', '11'); // Reduced from 12
+            yAxisLabel.setAttribute('font-weight', '600');
+            yAxisLabel.setAttribute('fill', 'var(--text-primary)');
+            yAxisLabel.setAttribute('transform', 'rotate(-90 12 75)');
+            yAxisLabel.textContent = 'Active Medications';
+            svg.appendChild(yAxisLabel);
+
+            // Add explanatory note
+            const noteText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            noteText.setAttribute('x', 350);
+            noteText.setAttribute('y', 20);
+            noteText.setAttribute('text-anchor', 'end');
+            noteText.setAttribute('font-size', '8'); // Reduced from 9
+            noteText.setAttribute('fill', 'var(--text-secondary)');
+            noteText.textContent = 'Numbers show total meds managed by that day';
+            svg.appendChild(noteText);
+
+            activityContainer.innerHTML = '';
+            activityContainer.appendChild(svg);
+        };
+
         // Function to update dashboard stats and visibility
         const updateDashboardStats = (medications) => {
             const welcomeSection = document.getElementById('welcomeSection');
@@ -1201,6 +1375,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('totalMeds').textContent = totalMeds;
                 document.getElementById('lowStockMeds').textContent = lowStockMeds;
                 document.getElementById('upcomingDoses').textContent = upcomingDoses;
+
+                // Calculate stock level
+                const validDays = medications
+                    .map(med => parseFloat(med.daysLeft))
+                    .filter(days => !isNaN(days) && days !== Infinity);
+                const averageDays = validDays.length ? validDays.reduce((a, b) => a + b, 0) / validDays.length : 0;
+                const stockPercentage = Math.min(100, Math.max(0, (averageDays / 30) * 100));
+
+                // Update stock level chart
+                const stockCircle = document.querySelector('.risk-score-ring circle:nth-child(2)');
+                const stockNumber = document.querySelector('.risk-score-number');
+                const stockPill = document.querySelector('.risk-score-pill');
+                const dashOffset = 440 * (1 - stockPercentage / 100);
+                if (stockCircle) stockCircle.setAttribute('stroke-dashoffset', dashOffset);
+                if (stockNumber) stockNumber.textContent = Math.round(stockPercentage) + '%';
+                if (stockPill) {
+                    if (stockPercentage < 25) {
+                        stockPill.textContent = 'Critical';
+                        stockPill.className = 'risk-score-pill critical';
+                    } else if (stockPercentage < 50) {
+                        stockPill.textContent = 'Low';
+                        stockPill.className = 'risk-score-pill low';
+                    } else {
+                        stockPill.textContent = 'Good';
+                        stockPill.className = 'risk-score-pill good';
+                    }
+                }
+
+                // Update activity graph
+                updateActivityGraph(medications);
             });
 
             // Check for reorder alerts

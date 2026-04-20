@@ -4,7 +4,6 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
-const path = require('path'); // Add this if not already at the top
 
 const dbPath = path.join(__dirname, 'database', 'medication.db');
 
@@ -1070,8 +1069,17 @@ app.get('/api/all-settings', (req, res) => {
     });
 });
 
-// Start the server on port
-app.listen(3111, () => { 
+// Start the server on a configurable port
+const port = process.env.PORT || 3111;
+const server = app.listen(port, () => {
     const currentDate = new Date().toISOString();
-    console.log(`Server started at ${currentDate}`);
+    console.log(`Server started at ${currentDate} on port ${port}`);
+});
+
+server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`Port ${port} is already in use. Stop the other process or set PORT to a free port.`);
+    } else {
+        console.error('Server error:', err);
+    }
 });
