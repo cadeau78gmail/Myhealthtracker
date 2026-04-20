@@ -5,9 +5,21 @@ const app = express();
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 
+<<<<<<< HEAD
 const dbPath = path.join(__dirname, 'database', 'medication.db');
 
 const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+=======
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught exception:', err);
+});
+
+process.on('unhandledRejection', (reason) => {
+    console.error('Unhandled rejection:', reason);
+});
+
+const db = new sqlite3.Database('./database/medication.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+>>>>>>> 5d4c9879ac8f0fdbd08071a6db3105dc33d0d214
     if (err) {
         console.error('❌ Error opening database:', err.message);
     } else {
@@ -1069,6 +1081,7 @@ app.get('/api/all-settings', (req, res) => {
     });
 });
 
+<<<<<<< HEAD
 // Start the server on a configurable port
 const port = process.env.PORT || 3111;
 const server = app.listen(port, () => {
@@ -1083,3 +1096,24 @@ server.on('error', (err) => {
         console.error('Server error:', err);
     }
 });
+=======
+function startServer(port) {
+    const server = app.listen(port, () => {
+        const currentDate = new Date().toISOString();
+        console.log(`Server started at ${currentDate} on port ${port}`);
+    });
+
+    server.on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.warn(`Port ${port} is already in use. Trying port ${port + 1}...`);
+            startServer(port + 1);
+        } else {
+            console.error('Server error:', err);
+            process.exit(1);
+        }
+    });
+}
+
+const DEFAULT_PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3111;
+startServer(DEFAULT_PORT);
+>>>>>>> 5d4c9879ac8f0fdbd08071a6db3105dc33d0d214

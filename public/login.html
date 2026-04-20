@@ -7,111 +7,385 @@
     <title>Medication Assistant - Login</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        html, body {
+            height: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+        }
         body {
             min-height: 100vh;
             margin: 0;
+            background: #f8fbff;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+        .login-card {
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            height: 100vh;
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            background: #ffffff;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: none;
+            border: none;
+        }
+        .login-panel {
+            position: relative;
+            padding: 1.5rem 3rem 3rem;
+            color: #ffffff;
+            background: linear-gradient(180deg, #172f4d 0%, #2563eb 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .login-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 20%, rgba(255,255,255,0.16), transparent 18%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.12), transparent 16%);
+            pointer-events: none;
+        }
+        .panel-content {
+            position: relative;
+            z-index: 1;
+            max-width: 320px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 72vh;
+            padding-bottom: 4rem;
+            padding-top: 1vh;
+        }
+        .panel-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+        }
+        .panel-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+        .panel-logo {
+            width: min(280px, 70vw);
+            height: min(280px, 70vw);
+            max-width: 280px;
+            max-height: 280px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #00b4d8 0%, #48cae4 60%, #90e0ef 100%);
-        }
-        .login-card {
-            width: min(420px, 92vw);
-            padding: 2.5rem;
+            margin: 2rem auto 0.5rem;
             background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            color: #0f172a;
+            border-radius: 50%;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15);
+            overflow: hidden;
         }
-        .login-card h1 {
-            margin: 0 0 2rem;
-            font-size: 1.75rem;
-            letter-spacing: -0.02em;
-            font-weight: 600;
-            color: #0f172a;
+        .panel-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: drop-shadow(0 18px 38px rgba(0, 0, 0, 0.20));
         }
-        .login-card p {
-            margin: 0 0 1.75rem;
-            color: #475569;
+        .panel-subtitle {
+            margin-top: 2rem;
+            color: #ffffff;
+            font-size: 1.8rem;
+            font-family: 'Garamond', 'Georgia', serif;
+            font-weight: 700;
+            text-align: left;
+            width: 100%;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+        .panel-tagline-sub {
+            margin-top: 0.75rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            font-family: 'Garamond', 'Georgia', serif;
+            font-weight: 400;
+            text-align: left;
+            width: 130%;
+            letter-spacing: 0.03em;
             line-height: 1.6;
+            white-space: nowrap;
+            margin-left: -15%;
+        }
+        .panel-image {
+            margin-top: 1rem;
+            width: 100%;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding-left: 1rem;
+        }
+        .panel-image img {
+            max-width: 180px;
+            width: min(180px, 70vw);
+            height: auto;
+            border-radius: 18px;
+            border: none;
+            box-shadow: none;
+        }
+        .panel-mark {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: rgba(255,255,255,0.18);
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: -0.06em;
+        }
+        .panel-brand-name {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            font-weight: 700;
+            margin: 0;
+        }
+        .panel-brand-sub {
+            margin: 0.25rem 0 0;
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.78);
+            letter-spacing: 0.08em;
+        }
+        .panel-heading {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            line-height: 1;
+        }
+        .panel-copy {
+            margin: 1.5rem 0 0;
+            color: rgba(255,255,255,0.9);
+            font-size: 1rem;
+            line-height: 1.8;
+            max-width: 320px;
+        }
+        .panel-tagline {
+            color: #ffffff;
+            font-family: 'Garamond', 'Georgia', serif;
+            font-size: 3.8rem;
+            font-weight: 900;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            line-height: 1;
+            text-align: center;
+            width: 100%;
+            margin: 1rem auto 1.5rem;
+            animation: floatRecovery 6s ease-in-out infinite;
+        }
+        @keyframes floatRecovery {
+            0%, 100% {
+                transform: translateX(-10px);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+        }
+        .hero-stats {
+            margin-top: 2.5rem;
+            display: grid;
+            gap: 1rem;
+        }
+        .stat-card {
+            display: grid;
+            gap: 0.5rem;
+            padding: 1rem 1.1rem;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.13);
+        }
+        .stat-title {
+            margin: 0;
+            font-size: 0.92rem;
+            color: rgba(255,255,255,0.92);
+            font-weight: 700;
+        }
+        .stat-sub {
+            margin: 0;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .signin-panel {
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100vh;
+            background: transparent;
+        }
+        .signin-card {
+            width: min(460px, 100%);
+            max-width: 460px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 2.5rem;
+            box-shadow: 0 26px 60px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            font-family: 'Garamond', 'Georgia', serif;
+        }
+        .signin-heading {
+            width: min(460px, 100%);
+            max-width: 460px;
+            margin: 0 auto 1.5rem;
+        }
+        .signin-heading h1 {
+            margin: 0;
+            font-size: 2.25rem;
+            font-family: 'Garamond', 'Georgia', serif;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: -0.02em;
         }
         .login-field {
             display: grid;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
         }
         .login-field label {
             font-size: 0.95rem;
-            color: #334155;
+            color: #1f2937;
+            font-weight: 700;
         }
         .login-field input {
             width: 100%;
-            padding: 0.95rem 1rem;
+            padding: 1rem 1.15rem;
             border: 1px solid #cbd5e1;
-            border-radius: 12px;
+            border-radius: 16px;
             font-size: 1rem;
+            color: #111827;
+            background: #f8fbff;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            font-weight: 600;
+        }
+        .login-field input:focus {
+            outline: none;
+            border-color: #93c5fd;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
         }
         .login-actions {
             display: grid;
-            gap: 0.85rem;
+            gap: 1rem;
+            margin-top: 0.5rem;
         }
         .login-actions button,
         .login-actions a {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.95rem 1rem;
+            padding: 1rem 1.15rem;
             border-radius: 999px;
             border: none;
-            background: #0077b6;
-            color: #ffffff;
             font-weight: 700;
-            text-decoration: none;
             cursor: pointer;
-            transition: transform 0.2s ease, background 0.2s ease;
+            text-decoration: none;
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+            min-height: 52px;
         }
-        .login-actions button:hover,
+        .login-actions button {
+            background: #1d4ed8;
+            color: #ffffff;
+        }
+        .login-actions a {
+            background: #eff6ff;
+            color: #1e293b;
+        }
+        .login-actions button:hover {
+            transform: translateY(-1px);
+            background: #2563eb;
+            box-shadow: 0 18px 40px rgba(37, 99, 235, 0.18);
+        }
         .login-actions a:hover {
             transform: translateY(-1px);
-            background: #0096c7;
+            background: #dbeafe;
+        }
+        .forgot-link {
+            display: inline-block;
+            margin-top: -0.5rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.92rem;
+            color: #2563eb;
+            text-decoration: none;
+        }
+        .forgot-link:hover {
+            text-decoration: underline;
         }
         .login-message {
             margin-top: 1rem;
-            color: #d00000;
+            color: #dc2626;
             font-size: 0.95rem;
         }
         .login-footer {
-            margin-top: 1.5rem;
-            font-size: 0.95rem;
+            margin-top: 1.8rem;
+            font-size: 0.92rem;
             color: #64748b;
+            line-height: 1.7;
         }
         .login-footer a {
-            color: #0077b6;
+            color: #2563eb;
             text-decoration: none;
         }
     </style>
 </head>
 <body>
     <article class="login-card">
-        <header>
-            <h1>Sign In</h1>
-        </header>
-        <form id="loginForm">
-            <div class="login-field">
-                <label for="name">Name</label>
-                <input type="text" id="name" placeholder="Your name" required>
+        <section class="login-panel">
+            <div class="panel-tagline">Recovery</div>
+            <div class="panel-content">
+                <div class="panel-logo">
+                    <img src="images/recovery-logo.jpg" alt="Recovery logo">
+                </div>
+                <div class="panel-subtitle">Your health in our hands</div>
+                <div class="panel-tagline-sub">Your health is a journey. Your medication is part of the map to health</div>
             </div>
-            <div class="login-field">
-                <label for="email">Email</label>
-                <input type="email" id="email" placeholder="you@example.com" required>
+        </section>
+        <section class="signin-panel">
+            <div class="signin-heading">
+                <h1>Welcome Back</h1>
             </div>
-            <div class="login-actions">
-                <button type="submit">Continue</button>
-                <a href="index.html" id="openDashboard">Open Dashboard</a>
+            <div class="signin-card">
+                <form id="loginForm">
+                    <input type="hidden" id="mode" value="login">
+                    <div class="login-field">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Your full name" required>
+                    </div>
+                    <div class="login-field">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="login-field">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <a class="forgot-link" href="#">Forgot password?</a>
+                    <div class="login-actions">
+                        <button type="submit">Login</button>
+                        <a href="#" id="openDashboard">Sign up</a>
+                    </div>
+                    <p class="login-message" id="loginMessage"></p>
+                </form>
             </div>
-            <p class="login-message" id="loginMessage"></p>
-        </form>
-        <p class="login-footer">If you do not have an account yet, entering a name and email will create one locally in your browser.</p>
+        </section>
     </article>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -119,35 +393,52 @@
             const loginMessage = document.getElementById('loginMessage');
             const storedName = localStorage.getItem('recoveryUserName');
             const storedEmail = localStorage.getItem('recoveryUserEmail');
+            const storedPassword = localStorage.getItem('recoveryUserPassword');
             const nameInput = document.getElementById('name');
             const emailInput = document.getElementById('email');
-            const openDashboard = document.getElementById('openDashboard');
-
-            if (storedName && storedEmail) {
-                nameInput.value = storedName;
-                emailInput.value = storedEmail;
-                openDashboard.textContent = 'Login to Dashboard';
-            } else {
-                openDashboard.textContent = 'Create Account';
-            }
+            const passwordInput = document.getElementById('password');
+            const openDashboardLink = document.getElementById('openDashboard');
+            const modeInput = document.getElementById('mode');
 
             loginForm.addEventListener('submit', (event) => {
                 event.preventDefault();
                 const name = nameInput.value.trim();
                 const email = emailInput.value.trim();
-                if (!name || !email) {
-                    loginMessage.textContent = 'Please enter both name and email.';
+                const password = passwordInput.value.trim();
+                const mode = modeInput.value;
+
+                if (!name || !email || !password) {
+                    loginMessage.textContent = 'Please enter name, email, and password.';
                     return;
                 }
 
-                if (storedName && storedEmail && (storedName !== name || storedEmail !== email)) {
-                    loginMessage.textContent = 'Name or email does not match your saved account.';
+                if (mode === 'signup') {
+                    // Always create new account for signup
+                    localStorage.setItem('recoveryUserName', name);
+                    localStorage.setItem('recoveryUserEmail', email);
+                    localStorage.setItem('recoveryUserPassword', password);
+                    window.location.href = 'index.html';
                     return;
                 }
 
-                localStorage.setItem('recoveryUserName', name);
-                localStorage.setItem('recoveryUserEmail', email);
-                window.location.href = 'index.html';
+                // Login mode
+                if (!storedName || !storedEmail || !storedPassword) {
+                    loginMessage.textContent = 'No account found. Please sign up first.';
+                    return;
+                }
+
+                if (storedName === name && storedEmail === email && storedPassword === password) {
+                    window.location.href = 'index.html';
+                } else {
+                    loginMessage.textContent = 'Invalid credentials. Please check your name, email, and password.';
+                }
+            });
+
+            // Handle Sign up link - set mode to signup and submit form
+            openDashboardLink.addEventListener('click', (event) => {
+                event.preventDefault();
+                modeInput.value = 'signup';
+                loginForm.dispatchEvent(new Event('submit'));
             });
         });
     </script>
