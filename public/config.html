@@ -4,20 +4,44 @@
     <link rel="icon" href="/icons/favicon.svg" type="image/x-icon">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedAssist - Medication Config</title>
+    <title>Recovery - Medication Config</title>
     <link rel="stylesheet" href="/flatpickr/flatpickr.min.css">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@700;800&display=swap" rel="stylesheet">
+
+    <style>
+    /* ── Garamond + bold for Config Highlights title ── */
+    .features-sidebar h2 {
+        font-family: 'EB Garamond', 'Garamond', Georgia, serif;
+        font-weight: 900;
+        font-size: 1.2rem;
+        color: #1a3a5c;
+        margin: 0 0 1rem;
+    }
+
+    /* ── Spacing between mini cards ── */
+    .features-sidebar .feature-card {
+        margin-bottom: 0.85rem;
+        padding: 1rem 1.1rem;
+    }
+    .features-sidebar .feature-card:last-child {
+        margin-bottom: 0;
+    }
+
+    
+    /* ── Permanently hide the overlapping inside labels ── */
+.input-group label.input-inside {
+    display: none !important;
+}
+    </style>
 </head>
 <body>
-    <script>
-        // Authentication check - redirect to login if not authenticated
-        const storedNameAuth = localStorage.getItem('recoveryUserName');
-        const storedEmailAuth = localStorage.getItem('recoveryUserEmail');
-        
-        if (!storedNameAuth || !storedEmailAuth) {
-            window.location.href = 'login.html';
-        }
-    </script>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="recovery-text">Recovery</div>
+        </div>
+    </div>
 
     <!-- Horizontal Navigation Bar -->
     <nav class="navbar">
@@ -44,38 +68,26 @@
 
     <main class="page-layout">
         <aside class="left-panel">
-            <div class="panel-visual config-hero">
-                <img src="/images/config-hero.svg" alt="Medication configuration illustration" class="hero-image">
-                <div class="hero-label">Organize Medication Schedules</div>
-            </div>
-            <div class="panel-copy">
-                <h2>Clean medication planning</h2>
-                <p>Keep your medications organized with clear schedules, stock levels, and active reminders. The system is designed to feel like a modern health dashboard.</p>
-                <div class="panel-feature-list">
-                    <div class="panel-feature">
-                        <div class="feature-label">Inventory Overview</div>
-                        <div>
-                            <h3>Inventory overview</h3>
-                            <p>See your current stock and next expected refill in one place.</p>
-                        </div>
-                    </div>
-                    <div class="panel-feature">
-                        <div class="feature-label">Smart Dosing</div>
-                        <div>
-                            <h3>Smart dosing</h3>
-                            <p>Manage recurring schedules for each medication easily and safely.</p>
-                        </div>
-                    </div>
-                    <div class="panel-feature">
-                        <div class="feature-label">Faster Updates</div>
-                        <div>
-                            <h3>Faster updates</h3>
-                            <p>Quickly add or revise medication details to keep your plan current.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="features-sidebar">
+                <h2>Config Highlights</h2>
+                <article class="feature-card">
+                    <div class="feature-label">Medication Log</div>
+                    <h3>Clear medication log</h3>
+                    <p>Maintain a clean list of each item, its dose, schedule and stock level.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-label">Fast Setup</div>
+                    <h3>Fast setup</h3>
+                    <p>Add new medicines and schedules with minimal clicks.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-label">Better Visibility</div>
+                    <h3>Better visibility</h3>
+                    <p>Spot medication gaps and upcoming changes before they happen.</p>
+                </article>
             </div>
         </aside>
+        
         <section class="page-content">
             <div class="dashboard-header">
                 <h1 class="top-title">Medication Configuration</h1>
@@ -104,8 +116,7 @@
                             <label for="name" class="input-top">Medication Name:</label>
                             <div class="input-wrapper">
                                 <div class="input-group">
-                                    <label for="name" class="input-inside">Unique Name</label>
-                                    <input type="text" id="name" name="name" required>
+                                    <input type="text" id="name" name="name" placeholder="Unique name" required>
                                 </div>
                             </div>
                             <label id="nameLabel" class="input-bottom"><br></label>
@@ -114,8 +125,7 @@
                             <label for="count" class="input-top">Current Stock:</label>
                             <div class="input-wrapper">
                                 <div class="input-group">
-                                    <label for="count" class="input-inside">Total Pills</label>
-                                    <input type="number" class="decimal" step="0.1" max="999999" id="count" name="count" required>
+                                    <input type="number" class="decimal" step="0.1" max="999999" id="count" name="count" placeholder="Total pills" required>
                                 </div>
                             </div>
                             <label id="countLabel" class="input-bottom"><br></label>
@@ -140,31 +150,9 @@
                 </div>
                 <div id="configTableContainer"></div>
             </div>
-
-            <div class="features-section">
-                <h2>Config highlights</h2>
-                <div class="feature-grid">
-                    <article class="feature-card">
-                        <div class="feature-label">Medication Log</div>
-                        <h3>Clear medication log</h3>
-                        <p>Maintain a clean list of each item, its dose, schedule and stock level.</p>
-                    </article>
-                    <article class="feature-card">
-                        <div class="feature-label">Fast Setup</div>
-                        <h3>Fast setup</h3>
-                        <p>Add new medicines and schedules with minimal clicks.</p>
-                    </article>
-                    <article class="feature-card">
-                        <div class="feature-label">Better Visibility</div>
-                        <h3>Better visibility</h3>
-                        <p>Spot medication gaps and upcoming changes before they happen.</p>
-                    </article>
-                </div>
-            </div>
         </section>
     </main>
 
-    <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
     <script src="/flatpickr/flatpickr.min.js"></script>
     <script src="/script.js"></script>
 </body>

@@ -9,16 +9,13 @@
 </head>
 <body>
     <script>
-        // Authentication check - redirect to login if not authenticated
         const storedNameAuth = localStorage.getItem('recoveryUserName');
         const storedEmailAuth = localStorage.getItem('recoveryUserEmail');
-        
         if (!storedNameAuth || !storedEmailAuth) {
             window.location.href = 'login.html';
         }
     </script>
 
-    <!-- Horizontal Navigation Bar -->
     <nav class="navbar">
         <div class="navbar-container">
             <button class="navbar-toggle" id="navbarToggle">
@@ -26,12 +23,10 @@
                 <span></span>
                 <span></span>
             </button>
-            
             <a href="index.html" class="navbar-brand">
                 <img src="/icons/logo-pills.svg" alt="Logo" class="navbar-logo">
                 <span class="brand-text">Recovery</span>
             </a>
-            
             <div class="navbar-menu" id="navbarMenu">
                 <a href="index.html" class="navbar-link" id="nav-home">Dashboard</a>
                 <a href="config.html" class="navbar-link" id="nav-config">Config</a>
@@ -224,6 +219,12 @@
                         <button type="submit" id="submitSmtpButton">Save Settings</button>
                     </div>
                 </form>
+
+                <div class="section-header" style="margin-top: 2rem;">
+                    <h2>Account</h2>
+                </div>
+                <p style="margin: 0 0 1rem; font-size: 0.9rem; color: #666;">Logging out will clear your session and return you to the login page.</p>
+                <button id="logoutBtn" type="button" style="background: transparent; border: 1.5px solid #e05252; color: #e05252; padding: 0.55rem 1.4rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500; cursor: pointer;">Log out</button>
             </div>
 
             <div class="features-section">
@@ -249,5 +250,12 @@
         </section>
     </main>
     <script src="script.js"></script>
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', function () {
+            localStorage.removeItem('recoveryUserName');
+            localStorage.removeItem('recoveryUserEmail');
+            window.location.href = 'login.html';
+        });
+    </script>
 </body>
 </html>

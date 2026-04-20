@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const addScheduleRow = (updateUsage, updateEvery, updateTime, updateStart) => {
             // Default values
-            const defaultUsage = updateUsage || '1';
+           const defaultUsage = updateUsage || '0';
             const defaultEvery = updateEvery || '1';
             const now = new Date(); // Current date
             const tomorrow = new Date(now);
@@ -237,7 +237,21 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         
             // Append the new schedule row to the container
-            scheduleContainer.appendChild(scheduleRow);
+scheduleContainer.appendChild(scheduleRow);
+
+// Hide label when input already has a value
+scheduleRow.querySelectorAll('.input-group input').forEach(input => {
+    const updateHasValue = () => {
+        if (input.value !== '' && input.value !== '0') {
+            input.classList.add('has-value');
+        } else {
+            input.classList.remove('has-value');
+        }
+    };
+    updateHasValue();
+    input.addEventListener('input', updateHasValue);
+    input.addEventListener('change', updateHasValue);
+});
 
             // initialize flatpickr
             flatpickr(`#calendarButton_${scheduleIndex}`, { 
