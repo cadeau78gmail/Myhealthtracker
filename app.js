@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const app = express();
@@ -7,6 +8,11 @@ const db = new sqlite3.Database('./database/medication.db', sqlite3.OPEN_READWRI
     if (err) {
         console.error('Error opening database:', err.message);
     } 
+});
+
+// Serve the login page at the root URL before static file fallback
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'login.html'));
 });
 
 // Serve static files

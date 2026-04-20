@@ -1,14 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Splash Screen Animation
+    // Splash Screen + Account creation
     const splashScreen = document.getElementById('splash-screen');
-    if (splashScreen) {
-        // Show splash screen for 3 seconds, then fade out
+    const accountForm = document.getElementById('accountForm');
+    const storedName = localStorage.getItem('recoveryUserName');
+    const storedEmail = localStorage.getItem('recoveryUserEmail');
+
+    const hideSplash = () => {
+        if (!splashScreen) return;
+        splashScreen.classList.add('fade-out');
         setTimeout(() => {
-            splashScreen.classList.add('fade-out');
-            // Remove splash screen from DOM after fade animation completes
-            setTimeout(() => {
-                splashScreen.remove();
-            }, 800);
+            splashScreen.remove();
+        }, 800);
+    };
+
+    if (storedName && storedEmail) {
+        hideSplash();
+    } else if (accountForm && splashScreen) {
+        accountForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            if (!name || !email) return;
+            localStorage.setItem('recoveryUserName', name);
+            localStorage.setItem('recoveryUserEmail', email);
+            hideSplash();
+        });
+    } else if (splashScreen) {
+        setTimeout(() => {
+            hideSplash();
         }, 3000);
     }
 
