@@ -1,3 +1,11 @@
+// Authentication check - redirect to login if not authenticated
+const storedNameAuth = localStorage.getItem('recoveryUserName');
+const storedEmailAuth = localStorage.getItem('recoveryUserEmail');
+
+if (!storedNameAuth || !storedEmailAuth) {
+    window.location.href = 'login.html';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Splash Screen + Account creation
     const splashScreen = document.getElementById('splash-screen');
@@ -15,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (storedName && storedEmail) {
         hideSplash();
+        // Personalize dashboard title
+        const topTitle = document.querySelector('.top-title');
+        if (topTitle) {
+            topTitle.textContent = `Welcome, ${storedName}`;
+        }
     } else if (accountForm && splashScreen) {
         accountForm.addEventListener('submit', (event) => {
             event.preventDefault();
