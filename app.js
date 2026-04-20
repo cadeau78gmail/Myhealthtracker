@@ -3,10 +3,16 @@ const sqlite3 = require('sqlite3').verbose();
 const app = express();
 const cron = require('node-cron');
 const nodemailer = require('nodemailer');
-const db = new sqlite3.Database('./database/medication.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+const path = require('path'); // Add this if not already at the top
+
+const dbPath = path.join(__dirname, 'database', 'medication.db');
+
+const db = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
-        console.error('Error opening database:', err.message);
-    } 
+        console.error('❌ Error opening database:', err.message);
+    } else {
+        console.log('✅ Connected to the database at:', dbPath);
+    }
 });
 
 // Serve static files
